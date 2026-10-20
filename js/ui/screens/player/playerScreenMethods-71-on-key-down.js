@@ -154,6 +154,14 @@ export function createPlayerScreenMethods71() {
         }
       }
 
+      if (keyCode === 87 && !event?.repeat) {
+        event?.preventDefault?.();
+        event?.stopPropagation?.();
+        event?.stopImmediatePropagation?.();
+        void this.openWaveformSync();
+        return;
+      }
+
       if (keyCode === 83) {
         if (this.subtitleDialogVisible) {
           this.closeSubtitleDialog();
