@@ -52,6 +52,18 @@ npm run package:webos
 
 `package:tizen` creates the unsigned WGT used by development and the Nuvio TV Installer. The installer signs it locally for the target TV before installation. `package:tizen:store` is a separate Seller Office build: it requires Tizen Studio/Web CLI and a configured security profile, and creates the signed Store package with the local EngineFS service included so Tizen 5+ retains torrent/P2P playback. Tizen 4 still reports P2P as unsupported at runtime. Nuvio TV is built with JavaScript, HTML, CSS, and platform TV APIs. Building requires Node.js and npm; package installation additionally requires the relevant Tizen or webOS tools.
 
+## Nuvio Sync fork — waveform subtitle sync
+
+This fork adds an on-device waveform sync editor to Nuvio:
+
+- Tizen AVPlay `setSoundAnalysisListener` captures the 31-band voice spectrum while the native player runs.
+- **Waveform** button in the subtitle delay overlay opens a canvas envelope with cue markers and playhead.
+- D-pad nudges the subtitle delay; Auto Sync correlates voice-band activity with cue starts; no server and no PCM access.
+- The overlay also works for manual adjustment on platforms without AVPlay sound analysis.
+
+Upstream project: [NuvioMedia/NuvioTVSmart](https://github.com/NuvioMedia/NuvioTVSmart).
+This fork remains GPLv3 and keeps the upstream license and attribution.
+
 ## License
 
 [GNU General Public License v3.0](./LICENSE)

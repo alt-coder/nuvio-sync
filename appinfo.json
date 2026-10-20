@@ -1,10 +1,10 @@
 {
-  "id": "space.nuvio.webos",
-  "version": "1.2.8",
+  "id": "space.nuvio.sync",
+  "version": "1.2.9",
   "vendor": "Nuvio Media",
   "type": "web",
   "main": "index.html",
-  "title": "Nuvio TV",
+  "title": "Nuvio Sync",
   "appDescription": "Bring your sources together in one TV library.",
   "keywords": ["streaming", "video", "media", "tv"],
   "category": "entertainment",

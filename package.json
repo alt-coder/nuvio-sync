@@ -1,8 +1,8 @@
 {
-  "name": "nuvio-tv-smart",
+  "name": "nuvio-sync",
   "private": true,
   "type": "module",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "scripts": {
     "build": "node ./scripts/build.mjs",
     "test": "npm run test:plugins",

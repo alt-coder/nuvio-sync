@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import * as internals from "./playerScreenContext.js";
+import { openWaveformSync } from "../../../core/player/subtitleWaveformSync.js";
 
 export function createPlayerScreenMethods57() {
   const {
@@ -46,6 +47,7 @@ export function createPlayerScreenMethods57() {
             <div class="player-subtitle-delay-actions">
               <button class="player-subtitle-delay-action focusable" type="button" data-subtitle-delay-focus="reset" tabindex="-1">${escapeHtml(t("subtitle_delay_reset", {}, "Reset Delay"))}</button>
               <button class="player-subtitle-delay-action focusable" type="button" data-subtitle-delay-focus="sync" tabindex="-1">${escapeHtml(t("player_sync_line", {}, "Sync Line"))}</button>
+              <button class="player-subtitle-delay-action focusable" type="button" data-subtitle-delay-focus="waveform" tabindex="-1">${escapeHtml(t("player_waveform_sync", {}, "Waveform"))}</button>
             </div>
           </div>
         `;
@@ -155,10 +157,27 @@ export function createPlayerScreenMethods57() {
           this.syncSubtitleDelayOverlayFocusDom({ focus: true });
           return true;
         }
+        if (keyCode === 39 || (isRtl && keyCode === 37)) {
+          this.subtitleDelayFocusTarget = "waveform";
+          this.syncSubtitleDelayOverlayFocusDom({ focus: true });
+          return true;
+        }
         if (isSelectKeyCode(keyCode)) {
           this.openSubtitleTimingDialog();
           return true;
         }
+      }
+      if (target === "waveform") {
+        if (keyCode === 37 || (isRtl && keyCode === 39)) {
+          this.subtitleDelayFocusTarget = "sync";
+          this.syncSubtitleDelayOverlayFocusDom({ focus: true });
+          return true;
+        }
+        if (isSelectKeyCode(keyCode)) {
+          this.openWaveformSync();
+          return true;
+        }
+        return true;
       }
       return true;
     },
@@ -174,8 +193,37 @@ export function createPlayerScreenMethods57() {
         this.setSubtitleDelayValue(0, { showOverlay: true });
       } else if (focusTarget === "sync") {
         this.openSubtitleTimingDialog();
+      } else if (focusTarget === "waveform") {
+        this.openWaveformSync();
       }
       return true;
+    },
+    async openWaveformSync() {
+      if (!this.subtitleAutoSyncCues.length) {
+        await this.loadSubtitleAutoSyncCues();
+      }
+      if (!this.subtitleAutoSyncCues.length) {
+        this.subtitleAutoSyncError =
+          this.subtitleAutoSyncError ||
+          t("subtitle_auto_sync_select_addon_track", {}, "Select an addon subtitle track to use waveform sync.");
+        this.openSubtitleTimingDialog();
+        return;
+      }
+      this.hideSubtitleDelayOverlay({ scheduleControls: false });
+      const selected = this.getSelectedAddonSubtitle?.();
+      const title = selected?.lang || selected?.language || selected?.languageCode || "Subtitles";
+      openWaveformSync({
+        title,
+        cues: this.subtitleAutoSyncCues,
+        delayMs: this.subtitleDelayMs,
+        getTime: () => this.getPlaybackCurrentSeconds(),
+        seek: (seconds) => this.seekPlaybackSeconds(seconds),
+        setDelay: (ms) => this.setSubtitleDelayValue(ms, { showOverlay: false }),
+        onClose: () => {
+          this.resetControlsAutoHide?.();
+          this.renderSubtitleDelayOverlay();
+        }
+      });
     },
     resetSubtitleAutoSyncState(clearLoadedTrack = true) {
       this.subtitleAutoSyncLoadToken = Number(this.subtitleAutoSyncLoadToken || 0) + 1;

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import * as internals from "./playerController.js";
+import { attachWaveformSync } from "./subtitleWaveformSync.js";
 
 export function createPlayerControllerMethods09() {
   const { Platform, logTizenAvPlayDebug } = internals;
@@ -32,6 +33,9 @@ export function createPlayerControllerMethods09() {
 
       try {
         avplay.open(this.avplayUrl);
+        // Register the sound-analysis listener while AVPlay is IDLE (after
+        // open, before prepareAsync). This cannot be done later.
+        attachWaveformSync(avplay);
         // Do not expose the AVPlay session to resize/focus callbacks until open
         // has moved the native object out of NONE and into IDLE.
         this.avplayActive = true;

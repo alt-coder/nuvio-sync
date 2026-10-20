@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import * as internals from "./playerController.js";
+import { detachWaveformSync } from "./subtitleWaveformSync.js";
 
 export function createPlayerControllerMethods08() {
   const {
@@ -100,6 +101,7 @@ export function createPlayerControllerMethods08() {
       this.avplayStartAfterSeek = null;
       this.avplaySeekTraceDumped = false;
       const avplay = this.getAvPlay();
+      detachWaveformSync(avplay);
 
       this.stopAvPlayTickTimer();
       if (avplay) {
