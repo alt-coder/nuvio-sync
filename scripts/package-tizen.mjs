@@ -20,8 +20,8 @@ const requireConfiguredRuntimeEnv = /^(1|true|yes|on)$/i.test(
 );
 
 const appName = "Nuvio Sync";
-const defaultTizenPackageId = "NuvioSync01";
-const defaultTizenAppId = "NuvioSync01.NuvioSync";
+const defaultTizenPackageId = "NuvioSync1";
+const defaultTizenAppId = "NuvioSync1.NuvioSync";
 const defaultWidgetUri = "https://nuvio.tv";
 const tizenEngineFsServiceRelativePath = "services/tizen/enginefs-service.js";
 const tizenEngineFsRuntimeDirRelativePath = "services/tizen/runtime";
